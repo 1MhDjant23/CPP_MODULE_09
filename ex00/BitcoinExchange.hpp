@@ -5,18 +5,23 @@
 #include <fstream>
 #include <map>
 #include <exception>
+#include <sstream>
 #define  dataBase "data.csv"
 
 class BitcoinExchange {
     private:
-        const std::map<std::string, float> database;
-        const std::map<std::string, float> evaluateDb;
+        std::map<std::string, float> database;
+        std::map<std::string, float> evaluateDb;
     public:
         void    setDataBase(const char* data);
-        BitcoinExchange();
-        ~BitcoinExchange();
+        float   stof(const std::string& str);
+        BitcoinExchange(){};
+        ~BitcoinExchange(){};
     class excepFile : public std::exception {
-        
+        public:
+            const char*	what() const _NOEXCEPT {
+                return "ExceptionDetected: file error.";
+            }
     };
 
 };
