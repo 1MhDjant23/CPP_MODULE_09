@@ -6,6 +6,7 @@
 #include <map>
 #include <exception>
 #include <sstream>
+#include <iomanip>
 #define  dataBase "data.csv"
 
 class BitcoinExchange {
@@ -14,6 +15,7 @@ class BitcoinExchange {
         std::map<std::string, float> evaluateDb;
     public:
         void    setDataBase(const char* data);
+        void    fileInterpreter(const char* file);
         float   stof(const std::string& str);
         BitcoinExchange(){};
         ~BitcoinExchange(){};
@@ -24,6 +26,16 @@ class BitcoinExchange {
             }
     };
 
+};
+
+class parseInputFile {
+    private:
+        std::string toParse;
+        parseInputFile(){};
+    public:
+        void    checkValidFormat() const;
+        parseInputFile(const std::string& str);
+        ~parseInputFile(){};
 };
 
 bool    validFile(const std::string& inpFile);
