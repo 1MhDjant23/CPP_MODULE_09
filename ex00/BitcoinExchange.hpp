@@ -33,6 +33,7 @@ class parseInputFile {
         std::string toParse;
         parseInputFile(){};
     public:
+        std::string trim();
         void    checkValidFormat() const;
         parseInputFile(const std::string& str);
         ~parseInputFile(){};

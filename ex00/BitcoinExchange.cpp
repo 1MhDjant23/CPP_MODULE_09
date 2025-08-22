@@ -52,7 +52,9 @@ bool    validFile(const std::string& inpFile)
 
 /*----------- Parse Class ---------------*/
 
-parseInputFile::parseInputFile(const std::string& str) : toParse(str) {}
+parseInputFile::parseInputFile(const std::string& str) : toParse(str) {
+    this->trim(); /*trim whitespace*/
+}
 
 void    parseInputFile::checkValidFormat() const {
     std::string date;
@@ -64,4 +66,10 @@ void    parseInputFile::checkValidFormat() const {
     date = this->toParse.substr(pos, this->toParse.find('|'));
     
     std::cout << date<< std::endl;
+}
+
+std::string parseInputFile::trim() {
+    size_t  start = this->toParse.find_first_not_of(" \t");
+    size_t  end = this->toParse.find_last_not_of(" \t");
+    return (start == std::string::npos ? "" : this->toParse.substr(start, end - start + 1));
 }
