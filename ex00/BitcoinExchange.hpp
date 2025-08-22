@@ -11,6 +11,7 @@
 
 class BitcoinExchange {
     private:
+
         std::map<std::string, float> database;
         std::map<std::string, float> evaluateDb;
     public:
@@ -19,12 +20,6 @@ class BitcoinExchange {
         float   stof(const std::string& str);
         BitcoinExchange(){};
         ~BitcoinExchange(){};
-    class excepFile : public std::exception {
-        public:
-            const char*	what() const _NOEXCEPT {
-                return "ExceptionDetected: file error.";
-            }
-    };
 
 };
 
@@ -36,6 +31,7 @@ class parseInputFile {
         std::string trim();
         void    checkValidFormat() const;
         parseInputFile(const std::string& str);
+        bool    parseDate() const;
         ~parseInputFile(){};
 };
 
