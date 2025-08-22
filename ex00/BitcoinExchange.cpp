@@ -35,6 +35,7 @@ void    BitcoinExchange::fileInterpreter(const char* file) {
     while (std::getline(fil, line)) {
         parseInputFile   ps(line);
         ps.checkValidFormat();
+        std::cout << line << "|----" << std::endl;
     }
 }
 
@@ -62,10 +63,16 @@ void    parseInputFile::checkValidFormat() const {
     if (pos == std::string::npos)/* check if date-value separed by '|' */
         throw std::runtime_error("Error: Invalid format");
     pos = this->toParse.find(' ');
+    if (this->toParse[pos + 1] != '|' || this->toParse[pos + 2] != ' ' || !std::isdigit(this->toParse[pos + 3]))
+        throw std::runtime_error("Error\nUsage: 'Year-Month-Day | value'.");
     date = this->toParse.substr(0, pos);
-    std::cout << date<< std::endl;
-    this->parseDate();
-    
+    this->parseDate(date);
+    pos += 3;
+    price  = this->toParse.substr(pos, this->toParse.length() - pos);
+    std::istringstream  iss(price);
+    float   value = 0;
+    if (!(iss >> value) || !iss.eof())
+        throw   std::runtime_error("Error: invalid value.");
 }
 
 std::string parseInputFile::trim() {
@@ -75,30 +82,17 @@ std::string parseInputFile::trim() {
     return (start == std::string::npos ? "" : this->toParse.substr(start, end - start + 1));
 }
 
-bool    parseInputFile::parseDate() const {
+void    parseInputFile::parseDate(const std::string& date) const {
     char    dash1, dash2;
     int year, month, day, dashCount = 0;
 
-    std::istringstream  iss(this->toParse);
-    for (size_t i = 0; i < 4; i++)
-    {
-        if (!std::isdigit(this->toParse[i]))
-            throw std::runtime_error("Error: invalid year format.");
-    }
-    std::cout << this->toParse[4] <<  " is dash" << std::endl;
-
-
-    // for (size_t i = 0; i < this->toParse.size(); i++) {
-    //     if (this->toParse[i] == '-') {
-    //         dashCount++;
-    //     }
-    //     else if (!std::isdigit(this->toPare[i]) || dashCount > 2)
-    //         throw std::runtime_error("Error: invalid date format.");
-        
-    // }
-    // for (size_t i = 4; i < 6; i++)
-    if (!(iss >> year >> dash1 >> month >> dash2 >> day) || dash1 != '-' || dash2 != '-')
-        throw std::runtime_error("Error: Invalid date format.");
-    std::cout << year << " year!" << std::endl;
-    return true;
+    std::istringstream  iss(date);
+    if (!(iss >> year >> dash1 >> month >> dash2 >> day))
+        throw std::runtime_error(ERROR);
+        if (dash1 != '-' || dash2 != '-')
+        throw std::runtime_error(ERROR);
+        if (date.length() != 10 || date[4] != '-' || date[7] != '-')
+        throw std::runtime_error(ERROR);
+    if (day < 1 || day > 31 || month < 1 || month > 12 || year < 1)
+            throw std::runtime_error("ERROR: date invalid.");
 }

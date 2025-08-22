@@ -8,6 +8,7 @@
 #include <sstream>
 #include <iomanip>
 #define  dataBase "data.csv"
+#define  ERROR "Error: invalid date format."
 
 class BitcoinExchange {
     private:
@@ -30,8 +31,8 @@ class parseInputFile {
     public:
         std::string trim();
         void    checkValidFormat() const;
+        void    parseDate(const std::string& date) const;
         parseInputFile(const std::string& str);
-        bool    parseDate() const;
         ~parseInputFile(){};
 };
 
