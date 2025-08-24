@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <istringstream>
+#include <exception>
 #include <stack>
 
 class	RPN {
