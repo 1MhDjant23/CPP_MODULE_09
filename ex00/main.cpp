@@ -4,20 +4,15 @@ int main (int ac, char **av) {
     if ( ac != 2 || !validFile(av[1]) ) {
         std::cerr << "Error: could not open file." << std::endl; exit(EXIT_FAILURE);
     }
-    // std::cout << "--------------------" << std::endl;
-    BitcoinExchange btc;
     try
     {
+   		BitcoinExchange btc;
         btc.setDataBase(dataBase);
         btc.fileInterpreter(av[1]);
-
     }
     catch(const std::exception& e)
     {
-        std::cerr << e.what() << '\n';
+        std::cerr << e.what() << std::endl;
     }
-    
-
-    
     return EXIT_SUCCESS;
 }
