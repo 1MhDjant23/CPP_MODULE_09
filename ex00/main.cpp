@@ -8,9 +8,9 @@ int main (int ac, char **av) {
     BitcoinExchange btc;
     try
     {
-        btc.fileInterpreter(av[1]);
         btc.setDataBase(dataBase);
-        
+        btc.fileInterpreter(av[1]);
+
     }
     catch(const std::exception& e)
     {
