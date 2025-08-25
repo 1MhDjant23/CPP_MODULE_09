@@ -9,35 +9,49 @@ RPN&	RPN::operator=(const RPN& other) {
 	return *this;
 }
 
+void	RPN::calculate(const std::string& token) {
+	if (this->_pile.size() < 2)
+		throw std::runtime_error("Error: expression invalid.");
+	int	n1, n2;
+	n1 = this->_pile.top();
+	this->_pile.pop();
+	n2 = this->_pile.top();
+	this->_pile.pop();
+	if (token == "+")
+		this->_pile.push(n2 + n1);
+	else if (token == "-")
+		this->_pile.push(n2 - n1);
+	else if (token == "*")
+		this->_pile.push(n2 * n1);
+	else if (token == "/") {
+		if (n1 == 0)
+			throw std::runtime_error("Error: division by zero.");
+		this->_pile.push(n2 / n1);
+	}
+}
+bool	RPN::isOperand(const std::string& token) {
+	std::istringstream	iss(token);
+	int					operand;
+	if (iss >> operand) {
+		this->_pile.push(operand);
+		return true;
+	}
+	return false;
+}
+
 void	RPN::evalRPN(const std::string& arg) {
-	char	op;
 	size_t	start = arg.find_first_not_of(' ');
 	std::istringstream	iss(arg.substr(start, arg.find_last_not_of(' ') - start + 1));
-	while (true) {
-		int		n = 0;
-		if (iss >> n)
-			this->_pile.push(n);
-		else if (iss >> op && (op == '+' || op == '-' || op == '*' || op == '/')) {
-			if (this->_pile.size() < 2)
-				throw std::runtime_error("Error: bad input.");
-			int	n1, n2;
-			n1 = this->_pile.top();
-			this->_pile.pop();
-			n2 = this->_pile.top();
-			this->_pile.pop();
-			if (op == '+')
-				this->_pile.push(n1 + n2);
-			else if (op == '-')
-				this->_pile.push(n2 - n1);
-			else if (op == '*')
-				this->_pile.push(n1 * n2);
-			else if (op == '/')
-				this->_pile.push(n2 / n1);
-		}
-		else if (op != ' ')
-			throw std::runtime_error("Error: bad input.");
-		if (iss.empty())
-	}
+	std::string			token;
 
-	std::cout << arg << std::endl;
+	while (iss >> token) {
+		if (token == "+" || token == "-" || token == "*" || token == "/")
+			this->calculate(token);
+		else if (!this->isOperand(token))
+			throw std::runtime_error("Error");
+	}
+	if (this->_pile.size() == 1)
+		std::cout << this->_pile.top() << std::endl;
+	else
+		throw std::runtime_error("Error: expression invalid.");
 }
