@@ -5,9 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f062a53a-1725-40f6-b5d0-c5a198ac82fc" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ex01/RPN.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/ex01/RPN.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ex01/RPN.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/ex01/RPN.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ex01/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/ex01/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ex02/PmergeMe.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/ex02/PmergeMe.hpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -80,7 +81,12 @@
       <workItem from="1756034370701" duration="159000" />
       <workItem from="1756034544372" duration="49000" />
       <workItem from="1756034612562" duration="8742000" />
-      <workItem from="1756055524872" duration="8910000" />
+      <workItem from="1756055524872" duration="9593000" />
+      <workItem from="1756140641586" duration="7616000" />
+      <workItem from="1756201197914" duration="2212000" />
+      <workItem from="1756229806939" duration="3983000" />
+      <workItem from="1756308110992" duration="2053000" />
+      <workItem from="1756374377887" duration="866000" />
     </task>
     <servers />
   </component>

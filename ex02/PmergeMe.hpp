@@ -16,6 +16,7 @@ class	PmergeMe {
 		PmergeMe();
 	public:
 		bool	parseInput(int arc, char **arg);
+
 		PmergeMe(int ac, char **av);
 		~PmergeMe(){};
 };

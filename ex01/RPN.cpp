@@ -29,6 +29,7 @@ void	RPN::calculate(const std::string& token) {
 		this->_pile.push(n2 / n1);
 	}
 }
+
 bool	RPN::isOperand(const std::string& token) {
 	std::istringstream	iss(token);
 	int					operand;
