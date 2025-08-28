@@ -9,14 +9,15 @@
 
 class	PmergeMe {
 	private:
-		std::vector<int>	vect;
-		std::deque<int>		deq;
+		std::vector<int>					vect;
+		std::vector<std::pair<int, int> >	_pair;
+		int				_unpair;
 		PmergeMe&	operator=(const PmergeMe& other);
 		PmergeMe(const PmergeMe& other);
 		PmergeMe();
 	public:
 		bool	parseInput(int arc, char **arg);
-
+		void	pairSort();
 		PmergeMe(int ac, char **av);
 		~PmergeMe(){};
 };
