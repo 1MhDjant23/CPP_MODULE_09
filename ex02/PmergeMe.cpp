@@ -42,32 +42,52 @@ void	PmergeMe::pairSort() {
 		this->_unpair = this->vect[this->vect.size() - 1];
 	while (i < this->vect.size() - 1) {
 		this->_pair.push_back(std::make_pair(this->vect[i], this->vect[i + 1] ));
-		std::cout << this->_pair[x].first << " " << this->_pair[x].second << std::endl;
 		x++;
 		i += 2;
 	}
 	this->vect.clear();
-	std::cout << "[--- sorting -----]" << std::endl;
-	std::cout << "[--- size -----]" << this->_pair.size() << std::endl;
 	for (size_t i = 0; i < this->_pair.size(); i++) {
 		if (this->_pair[i].first > this->_pair[i].second) {
 			int	tmp = this->_pair[i].first;
 			this->_pair[i].first = this->_pair[i].second;
 			this->_pair[i].second = tmp;
 		}
-		
-		std::cout << this->_pair[i].first << " " << this->_pair[i].second << std::endl;
 	}
-	
+	// Insert main Chain for larger numbers in each pairs
+	this->setMainChain();
+}
+
+void	PmergeMe::setMainChain() {
+	for (size_t i = 0; i < this->_pair.size(); i++) {
+		this->mainChain.push_back(this->_pair[i].second);
+	}
+	for (size_t i = 0; i < this->mainChain.size(); i++) {
+		std::cout << this->mainChain[i] << " ";
+	}
+	std::cout << std::endl;
+	std::cout << "insertion sort ==> " << std::endl;
+	this->insertionSort(this->mainChain, 0, this->mainChain.size());
+
+}
+void	PmergeMe::insertionSort(std::vector<int>& vect, size_t start, size_t end) {
+	for (size_t i = start + 1; i < end; i++)
+	{
+		int	key = vect[i];
+		int	j = i - 1;
+		while (j >= start && vect[j] > key)
+		{
+			vect[j + 1] = vect[j];
+			j--;
+		}
+		vect[j + 1] = key;
+	}
+	for (size_t i = 0; i < vect.size(); i++) {
+		std::cout << vect[i] << " ";
+	}
+	std::cout << std::endl;
 }
 
 PmergeMe::PmergeMe(int ac, char **av) {
 	if (ac < 3 || !this->parseInput(ac, av))
-		throw std::runtime_error("Error: invalid input.\nUsage: ./PmergeMe n1 n2 n3 ...n^n");
-	else
-	{
-		for (int i = 0; i < this->vect.size(); i++)
-			std::cout << vect[i] << " " ;
-	}
-		std::cout << std::endl;
+		throw std::runtime_error("Error: invalid input.");
 }
