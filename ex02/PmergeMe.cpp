@@ -1,5 +1,7 @@
 #include "PmergeMe.hpp"
 
+int	PmergeMe::seuil = 5;
+
 bool	PmergeMe::parseInput(int arc, char **arg) {
 	for (int i = 1; i < arc; i++) {
 		int					operand = 0;
@@ -69,22 +71,47 @@ void	PmergeMe::setMainChain() {
 	this->insertionSort(this->mainChain, 0, this->mainChain.size());
 
 }
-void	PmergeMe::insertionSort(std::vector<int>& vect, size_t start, size_t end) {
-	for (size_t i = start + 1; i < end; i++)
+void	PmergeMe::insertionSort(std::vector<int>& arr, size_t start, size_t end) {
+	std::cout << "insertion sort ==> " << std::endl;
+	for (size_t i = start; i <= end; i++) {
+		std::cout << arr[i] << " ";
+	std::cout << std::endl;
+	for (size_t i = start + 1; i <= end; i++)
 	{
-		int	key = vect[i];
+		int	key = arr[i];
 		int	j = i - 1;
-		while (j >= start && vect[j] > key)
+		while (j >= start && arr[j] > key)
 		{
-			vect[j + 1] = vect[j];
+			arr[j + 1] = arr[j];
 			j--;
 		}
-		vect[j + 1] = key;
+		arr[j + 1] = key;
 	}
-	for (size_t i = 0; i < vect.size(); i++) {
-		std::cout << vect[i] << " ";
+//	std::cout << "after sort parts ---> " << std::endl;
+//	}	for (size_t i = start; i <= end; i++) {
+//		std::cout << arr[i] << " ";
 	}
-	std::cout << std::endl;
+}
+
+void	PmergeMe::mergeInserionSort(std::vector<int>& arr, size_t start, size_t end) {
+	if (end - start + 1 <= PmergeMe::seuil) {
+		PmergeMe::insertionSort(arr, start, end);
+		return ;
+	}
+	int		midll = start + (end - start) / 2;
+	mergeInserionSort(arr, start, midll);
+	mergeInserionSort(arr, midll + 1, end);
+
+	std::vector<int>	tmp(end - start + 1);
+	size_t	i = start;
+	size_t	j = midll + 1;
+	size_t	k = 0;
+    while (i <= midll && j <= end)
+    	tmp[k++] = (arr[i] < arr[j]) ? arr[i++] : arr[j++];
+	while (i <= midll) tmp[k++] = arr[i++];
+	while (j <= end) tmp[k++] = arr[j++];
+	for (k = 0; k < tmp.size(); k++)
+		arr[start + k] = tmp[k];
 }
 
 PmergeMe::PmergeMe(int ac, char **av) {

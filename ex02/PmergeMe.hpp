@@ -9,6 +9,7 @@
 
 class	PmergeMe {
 	private:
+		static int	seuil;
 		std::vector<int>					vect;
 		std::vector<int>					mainChain;
 
@@ -18,7 +19,8 @@ class	PmergeMe {
 		PmergeMe(const PmergeMe& other);
 		PmergeMe();
 	public:
-		void	insertionSort(std::vector<int>& vect, size_t start, size_t end);
+		static void	insertionSort(std::vector<int>& arr, size_t start, size_t end);
+		static void	mergeInserionSort(std::vector<int>& arr, size_t start, size_t end);
 		bool	hasDuplicat() const;
 		bool	parseInput(int arc, char **arg);
 		void	pairSort();
