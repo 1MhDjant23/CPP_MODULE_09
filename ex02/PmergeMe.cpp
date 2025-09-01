@@ -60,22 +60,22 @@ void	PmergeMe::pairSort() {
 }
 
 void	PmergeMe::setMainChain() {
-	for (size_t i = 0; i < this->_pair.size(); i++) {
+	for (size_t i = 0; i < this->_pair.size(); i++)
 		this->mainChain.push_back(this->_pair[i].second);
-	}
+	for (size_t i = 0; i < this->mainChain.size(); i++)
+		std::cout << mainChain[i] << " " ;
+	std::cout << std::endl;
+	//sort mainChain using mergeInserionSort algorithm
+	this->mergeInserionSort(this->mainChain, 0, this->mainChain.size() - 1);
+	std::cout << "after sorting it .." << std::endl;
 	for (size_t i = 0; i < this->mainChain.size(); i++) {
-		std::cout << this->mainChain[i] << " ";
+		std::cout << mainChain[i] << " " ;
 	}
 	std::cout << std::endl;
-	std::cout << "insertion sort ==> " << std::endl;
-	this->insertionSort(this->mainChain, 0, this->mainChain.size());
-
+//	this->insertionSort(this->mainChain, 0, this->mainChain.size());
 }
+
 void	PmergeMe::insertionSort(std::vector<int>& arr, size_t start, size_t end) {
-	std::cout << "insertion sort ==> " << std::endl;
-	for (size_t i = start; i <= end; i++) {
-		std::cout << arr[i] << " ";
-	std::cout << std::endl;
 	for (size_t i = start + 1; i <= end; i++)
 	{
 		int	key = arr[i];
@@ -86,10 +86,6 @@ void	PmergeMe::insertionSort(std::vector<int>& arr, size_t start, size_t end) {
 			j--;
 		}
 		arr[j + 1] = key;
-	}
-//	std::cout << "after sort parts ---> " << std::endl;
-//	}	for (size_t i = start; i <= end; i++) {
-//		std::cout << arr[i] << " ";
 	}
 }
 
