@@ -25,6 +25,8 @@ class	PmergeMe {
 		bool	parseInput(int arc, char **arg);
 		void	pairSort();
 		void	setMainChain();
+		void	insertSmallJacobsthal();
+		std::vector<int>	getJacobsthalOrder(size_t size)  const;
 		PmergeMe(int ac, char **av);
 		~PmergeMe(){};
 };

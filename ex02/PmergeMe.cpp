@@ -75,6 +75,36 @@ void	PmergeMe::setMainChain() {
 //	this->insertionSort(this->mainChain, 0, this->mainChain.size());
 }
 
+std::vector<int>	PmergeMe::getJacobsthalOrder(size_t size) const {
+	std::vector<int>	order;
+	int			J1 = 1;
+	int			J0 = 0;
+
+	while (J1 < size)
+	{
+		order.push_back(J1);
+		int	nxt = J1 + 2 * J0;
+		J0 = J1;
+		J1 = nxt;
+	}
+	std::vector<bool>	used(size, false);
+	for (size_t i = 0; i < order.size(); i++)
+	{
+
+	}
+	for (size_t i = 0; i < size; i++)
+	{
+		
+	}
+	
+	return order;
+}
+
+// void	PmergeMe::insertSmallJacobstahl() {
+
+// }
+
+
 void	PmergeMe::insertionSort(std::vector<int>& arr, size_t start, size_t end) {
 	for (size_t i = start + 1; i <= end; i++)
 	{
