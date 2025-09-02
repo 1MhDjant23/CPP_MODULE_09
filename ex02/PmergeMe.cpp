@@ -75,34 +75,49 @@ void	PmergeMe::setMainChain() {
 //	this->insertionSort(this->mainChain, 0, this->mainChain.size());
 }
 
-std::vector<int>	PmergeMe::getJacobsthalOrder(size_t size) const {
-	std::vector<int>	order;
-	int			J1 = 1;
-	int			J0 = 0;
-
-	while (J1 < size)
+std::vector<int>	PmergeMe::getJacobsthalOrder(size_t size) {
+	std::vector<int>	Jacob(size + 2);
+	if (size > 0)
+		Jacob[0] = 0;
+	if (size > 1)
+		Jacob[1] = 1;
+	size_t	k = 2;
+	for (k = 2; k < size; k++)
 	{
-		order.push_back(J1);
-		int	nxt = J1 + 2 * J0;
-		J0 = J1;
-		J1 = nxt;
+		if (Jacob[k - 1] + 2 * Jacob[k - 2] > size)
+			break;
+		Jacob[k] = Jacob[k - 1] + 2 * Jacob[k - 2];
 	}
-	std::vector<bool>	used(size, false);
-	for (size_t i = 0; i < order.size(); i++)
-	{
-
-	}
+	Jacob.erase(Jacob.begin(), Jacob.begin() + 2);
+	k--;
 	for (size_t i = 0; i < size; i++)
 	{
-		
+		if (std::find(Jacob.begin(), Jacob.end(), i) == Jacob.end())
+			Jacob[k++] = i;
 	}
-	
-	return order;
+	return Jacob;
+}
+void	PmergeMe::binarySearch() {
+
 }
 
-// void	PmergeMe::insertSmallJacobstahl() {
-
-// }
+void	PmergeMe::insertSmallJacobsthal() {
+	std::cout << "size is: " << _pair.size() << std::endl;
+	const std::vector<int>	jacobIndex = PmergeMe::getJacobsthalOrder(_pair.size());
+	std::cout << "inside --" << std::endl;
+	int pos;
+	for (size_t i = 0; i < jacobIndex.size(); i++)
+	{
+		int	small = _pair[jacobIndex[i]].first;
+		pos = std::lower_bound(mainChain.begin(), mainChain.end(), small);
+		mainChain.insert(pos, small);
+	}
+	if (_unpair != -1)
+	{
+		pos = std::lower_bound(mainChain.begin(), mainChain.end(), _unpair)
+		mainChain.insert(pos, _unpair);
+	}
+}
 
 
 void	PmergeMe::insertionSort(std::vector<int>& arr, size_t start, size_t end) {

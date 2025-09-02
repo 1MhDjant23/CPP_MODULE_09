@@ -3,13 +3,16 @@
 int	main(int ac, char **av) {
 	try {
 		PmergeMe	pm(ac, av);
+		pm.pairSort();
+		pm.insertSmallJacobsthal();
+
 		// pm.pairSort();//dived all numbers to pairs and sort each pair
-		std::vector<int>	v = pm.getJacobsthalOrder(6);
-		for (size_t i = 0; i < v.size(); i++)
-		{
-			std::cout << "index: " << v[i] << std::endl;
-		}
-		
+		// std::vector<int>	v = PmergeMe::getJacobsthalOrder(6);
+		// std::cout << "after ----------" << std::endl;
+		// for (size_t i = 0; i < v.size(); i++)
+		// {
+		// 	std::cout << v[i] << std::endl;
+		// }
 	}
 	catch (const std::exception& e) {
 		std::cerr << e.what() << std::endl;
