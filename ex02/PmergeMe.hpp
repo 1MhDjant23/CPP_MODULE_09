@@ -7,27 +7,27 @@
 #include <vector>
 #include <deque>
 #include <algorithm>
-
+template <class T, class PAIR>
 class	PmergeMe {
 	private:
 		static int	seuil;
-		std::vector<int>					list;
-		std::vector<int>					mainChain;
+		T			list;
+		T			mainChain;
 
-		std::vector<std::pair<int, int> >	_pair;
+		PAIR	_pair;
 		int				_unpair = -1;
 		PmergeMe&	operator=(const PmergeMe& other);
 		PmergeMe(const PmergeMe& other);
 		PmergeMe();
 	public:
-		static void	insertionSort(std::vector<int>& arr, size_t start, size_t end);
-		static void	mergeInserionSort(std::vector<int>& arr, size_t start, size_t end);
+		static void	insertionSort(T& arr, size_t start, size_t end);
+		static void	mergeInserionSort(T& arr, size_t start, size_t end);
 		bool	hasDuplicat() const;
 		bool	parseInput(int arc, char **arg);
 		void	pairSort();
 		void	setMainChain();
 		void	insertSmallJacobsthal();
-		static std::vector<int>	getJacobsthalOrder(size_t size);
+		static T	getJacobsthalOrder(size_t size);
 		PmergeMe(int ac, char **av);
 		~PmergeMe(){
 		};

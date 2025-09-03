@@ -1,8 +1,9 @@
 #include "PmergeMe.hpp"
+template <class T, class PAIR>
+int	PmergeMe<T, PAIR>::seuil = 5;
 
-int	PmergeMe::seuil = 5;
-
-bool	PmergeMe::parseInput(int arc, char **arg) {
+template <class T, class PAIR>
+bool	PmergeMe<T, PAIR>::parseInput(int arc, char **arg) {
 	for (int i = 1; i < arc; i++) {
 		int					operand = 0;
 		std::string			remainder;
@@ -25,7 +26,8 @@ bool	PmergeMe::parseInput(int arc, char **arg) {
 	return true;
 }
 
-bool	PmergeMe::hasDuplicat() const {
+template <class T, class PAIR>
+bool	PmergeMe<T, PAIR>::hasDuplicat() const {
 	for (size_t i = 0; i < this->list.size(); i++)
 	{
 		for (size_t x = i + 1; x < this->list.size(); x++)
@@ -37,7 +39,8 @@ bool	PmergeMe::hasDuplicat() const {
 	return false;
 }
 
-void	PmergeMe::pairSort() {
+template <class T, class PAIR>
+void	PmergeMe<T, PAIR>::pairSort() {
 	size_t	i = 0;
 	size_t	x = 0;
 	if (this->list.size() % 2 != 0)
@@ -59,17 +62,19 @@ void	PmergeMe::pairSort() {
 	this->setMainChain();
 }
 
-void	PmergeMe::setMainChain() {
+template <class T, class PAIR>
+void	PmergeMe<T, PAIR>::setMainChain() {
 	for (size_t i = 0; i < this->_pair.size(); i++)
 		this->mainChain.push_back(this->_pair[i].second);
 
 	//sort mainChain using mergeInserionSort algorithm
-	this->mergeInserionSort(this->mainChain, 0, this->mainChain.size() - 1);
+	PmergeMe<T, PAIR>::mergeInserionSort(this->mainChain, 0, this->mainChain.size() - 1);
 
 }
 
-std::vector<int>	PmergeMe::getJacobsthalOrder(size_t size) {
-	std::vector<int>	Jacob(size + 2);
+template <class T, class PAIR>
+T	PmergeMe<T, PAIR>::getJacobsthalOrder(size_t size) {
+	T	Jacob(size + 2);
 	if (size > 0)
 		Jacob[0] = 0;
 	if (size > 1)
@@ -91,9 +96,11 @@ std::vector<int>	PmergeMe::getJacobsthalOrder(size_t size) {
 	return Jacob;
 }
 
-void	PmergeMe::insertSmallJacobsthal() {
-	const std::vector<int>	jacobIndex = PmergeMe::getJacobsthalOrder(_pair.size());
-	std::vector<int>::iterator pos;
+
+template <class T, class PAIR>
+void	PmergeMe<T, PAIR>::insertSmallJacobsthal() {
+	const T	jacobIndex = PmergeMe<T, PAIR>::getJacobsthalOrder(_pair.size());
+	typename T::iterator pos;
 	for (size_t i = 0; i < jacobIndex.size(); i++)
 	{
 		int	small = _pair[jacobIndex[i]].first;
@@ -117,8 +124,8 @@ void	PmergeMe::insertSmallJacobsthal() {
 	}
 }
 
-
-void	PmergeMe::insertionSort(std::vector<int>& arr, size_t start, size_t end) {
+template <class T, class PAIR>
+void	PmergeMe<T, PAIR>::insertionSort(T& arr, size_t start, size_t end) {
 	for (size_t i = start + 1; i <= end; i++)
 	{
 		int	key = arr[i];
@@ -132,15 +139,16 @@ void	PmergeMe::insertionSort(std::vector<int>& arr, size_t start, size_t end) {
 	}
 }
 
-void	PmergeMe::mergeInserionSort(std::vector<int>& arr, size_t start, size_t end) {
+template <class T, class PAIR>
+void	PmergeMe<T, PAIR>::mergeInserionSort(T& arr, size_t start, size_t end) {
 	if (end - start + 1 <= PmergeMe::seuil) {
-		PmergeMe::insertionSort(arr, start, end);
+		PmergeMe<T, PAIR>::insertionSort(arr, start, end);
 		return ;
 	}
 	int		midll = start + (end - start) / 2;
 	mergeInserionSort(arr, start, midll);
 	mergeInserionSort(arr, midll + 1, end);
-	std::vector<int>	tmp(end - start + 1);
+	T	tmp(end - start + 1);
 	size_t	i = start;
 	size_t	j = midll + 1;
 	size_t	k = 0;
@@ -152,7 +160,8 @@ void	PmergeMe::mergeInserionSort(std::vector<int>& arr, size_t start, size_t end
 		arr[start + k] = tmp[k];
 }
 
-PmergeMe::PmergeMe(int ac, char **av) {
+template <class T, class PAIR>
+PmergeMe<T, PAIR>::PmergeMe(int ac, char **av) {
 	if (ac < 3 || !this->parseInput(ac, av))
 		throw std::runtime_error("Error: invalid input.");
 	if (std::is_sorted(this->list.begin(), this->list.end()))

@@ -2,7 +2,7 @@
 
 int	main(int ac, char **av) {
 	try {
-		PmergeMe	pm(ac, av);
+		PmergeMe<std::vector<int>, std::vector<std::pair<int, int> >>	pm(ac, av);
 		pm.pairSort();
 		pm.insertSmallJacobsthal();
 
