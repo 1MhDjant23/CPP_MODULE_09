@@ -15,7 +15,7 @@ bool	PmergeMe::parseInput(int arc, char **arg) {
 			}
 			if (operand < 0)
 				throw	std::runtime_error("Error: negative number.");
-			this->vect.push_back(operand);
+			this->list.push_back(operand);
 		}
 		else
 			throw std::runtime_error("Error: invalid input.");
@@ -26,11 +26,11 @@ bool	PmergeMe::parseInput(int arc, char **arg) {
 }
 
 bool	PmergeMe::hasDuplicat() const {
-	for (size_t i = 0; i < this->vect.size(); i++)
+	for (size_t i = 0; i < this->list.size(); i++)
 	{
-		for (size_t x = i + 1; x < this->vect.size(); x++)
+		for (size_t x = i + 1; x < this->list.size(); x++)
 		{
-			if (this->vect[i] == this->vect[x])
+			if (this->list[i] == this->list[x])
 				return true;
 		}
 	}
@@ -40,15 +40,15 @@ bool	PmergeMe::hasDuplicat() const {
 void	PmergeMe::pairSort() {
 	size_t	i = 0;
 	size_t	x = 0;
-	if (this->vect.size() % 2 != 0)
-		this->_unpair = this->vect[this->vect.size() - 1];
-	while (i < this->vect.size() - 1) {
-		this->_pair.push_back(std::make_pair(this->vect[i], this->vect[i + 1] ));
+	if (this->list.size() % 2 != 0)
+		this->_unpair = this->list[this->list.size() - 1];
+	while (i < this->list.size() - 1) {
+		this->_pair.push_back(std::make_pair(this->list[i], this->list[i + 1] ));
 		x++;
 		i += 2;
 	}
-		std::cout << "size of vect is : " << this->vect.size() << std::endl;
-	this->vect.clear();
+		std::cout << "size of list is : " << this->list.size() << std::endl;
+	this->list.clear();
 	for (size_t i = 0; i < this->_pair.size(); i++) {
 		if (this->_pair[i].first > this->_pair[i].second) {
 			int	tmp = this->_pair[i].first;
@@ -155,4 +155,6 @@ void	PmergeMe::mergeInserionSort(std::vector<int>& arr, size_t start, size_t end
 PmergeMe::PmergeMe(int ac, char **av) {
 	if (ac < 3 || !this->parseInput(ac, av))
 		throw std::runtime_error("Error: invalid input.");
+	if (std::is_sorted(this->list.begin(), this->list.end()))
+		throw std::runtime_error("Numbers already sorted.");
 }

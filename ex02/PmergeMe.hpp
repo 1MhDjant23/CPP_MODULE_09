@@ -30,12 +30,6 @@ class	PmergeMe {
 		static std::vector<int>	getJacobsthalOrder(size_t size);
 		PmergeMe(int ac, char **av);
 		~PmergeMe(){
-			// std::cout << "finally .." << std::endl;
-			// for (size_t i = 0; i < mainChain.size(); i++)
-			// {
-			// 	std::cout << mainChain[i] << std::endl;
-			// }
-			
 		};
 };
 
