@@ -47,6 +47,7 @@ void	PmergeMe::pairSort() {
 		x++;
 		i += 2;
 	}
+		std::cout << "size of vect is : " << this->vect.size() << std::endl;
 	this->vect.clear();
 	for (size_t i = 0; i < this->_pair.size(); i++) {
 		if (this->_pair[i].first > this->_pair[i].second) {
@@ -55,24 +56,16 @@ void	PmergeMe::pairSort() {
 			this->_pair[i].second = tmp;
 		}
 	}
-	// Insert main Chain for larger numbers in each pairs
 	this->setMainChain();
 }
 
 void	PmergeMe::setMainChain() {
 	for (size_t i = 0; i < this->_pair.size(); i++)
 		this->mainChain.push_back(this->_pair[i].second);
-	for (size_t i = 0; i < this->mainChain.size(); i++)
-		std::cout << mainChain[i] << " " ;
-	std::cout << std::endl;
+
 	//sort mainChain using mergeInserionSort algorithm
 	this->mergeInserionSort(this->mainChain, 0, this->mainChain.size() - 1);
-	std::cout << "after sorting it .." << std::endl;
-	for (size_t i = 0; i < this->mainChain.size(); i++) {
-		std::cout << mainChain[i] << " " ;
-	}
-	std::cout << std::endl;
-//	this->insertionSort(this->mainChain, 0, this->mainChain.size());
+
 }
 
 std::vector<int>	PmergeMe::getJacobsthalOrder(size_t size) {
@@ -84,7 +77,7 @@ std::vector<int>	PmergeMe::getJacobsthalOrder(size_t size) {
 	size_t	k = 2;
 	for (k = 2; k < size; k++)
 	{
-		if (Jacob[k - 1] + 2 * Jacob[k - 2] > size)
+		if (Jacob[k - 1] + 2 * Jacob[k - 2] >= size)
 			break;
 		Jacob[k] = Jacob[k - 1] + 2 * Jacob[k - 2];
 	}
@@ -97,15 +90,10 @@ std::vector<int>	PmergeMe::getJacobsthalOrder(size_t size) {
 	}
 	return Jacob;
 }
-void	PmergeMe::binarySearch() {
-
-}
 
 void	PmergeMe::insertSmallJacobsthal() {
-	std::cout << "size is: " << _pair.size() << std::endl;
 	const std::vector<int>	jacobIndex = PmergeMe::getJacobsthalOrder(_pair.size());
-	std::cout << "inside --" << std::endl;
-	int pos;
+	std::vector<int>::iterator pos;
 	for (size_t i = 0; i < jacobIndex.size(); i++)
 	{
 		int	small = _pair[jacobIndex[i]].first;
@@ -114,8 +102,18 @@ void	PmergeMe::insertSmallJacobsthal() {
 	}
 	if (_unpair != -1)
 	{
-		pos = std::lower_bound(mainChain.begin(), mainChain.end(), _unpair)
+		pos = std::lower_bound(mainChain.begin(), mainChain.end(), _unpair);
 		mainChain.insert(pos, _unpair);
+	}
+	std::cout << "size of mainChain is : " << mainChain.size() << std::endl;
+	std::cout << "checking if the list is sorted ... " << std::endl;
+	if (std::is_sorted(mainChain.begin(), mainChain.end()))
+	{
+		std::cout << "List is sorted." << std::endl;
+	}
+	else
+	{
+		std::cout << "List is not sorted." << std::endl;
 	}
 }
 
@@ -142,7 +140,6 @@ void	PmergeMe::mergeInserionSort(std::vector<int>& arr, size_t start, size_t end
 	int		midll = start + (end - start) / 2;
 	mergeInserionSort(arr, start, midll);
 	mergeInserionSort(arr, midll + 1, end);
-
 	std::vector<int>	tmp(end - start + 1);
 	size_t	i = start;
 	size_t	j = midll + 1;

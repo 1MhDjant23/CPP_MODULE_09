@@ -11,7 +11,7 @@
 class	PmergeMe {
 	private:
 		static int	seuil;
-		std::vector<int>					vect;
+		std::vector<int>					list;
 		std::vector<int>					mainChain;
 
 		std::vector<std::pair<int, int> >	_pair;
@@ -22,7 +22,6 @@ class	PmergeMe {
 	public:
 		static void	insertionSort(std::vector<int>& arr, size_t start, size_t end);
 		static void	mergeInserionSort(std::vector<int>& arr, size_t start, size_t end);
-		void	binarySearch();
 		bool	hasDuplicat() const;
 		bool	parseInput(int arc, char **arg);
 		void	pairSort();
@@ -31,11 +30,11 @@ class	PmergeMe {
 		static std::vector<int>	getJacobsthalOrder(size_t size);
 		PmergeMe(int ac, char **av);
 		~PmergeMe(){
-			std::cout << "finally .." << std::endl;
-			for (size_t i = 0; i < mainChain.size(); i++)
-			{
-				std::cout << mainChain[i] << std::endl;
-			}
+			// std::cout << "finally .." << std::endl;
+			// for (size_t i = 0; i < mainChain.size(); i++)
+			// {
+			// 	std::cout << mainChain[i] << std::endl;
+			// }
 			
 		};
 };
