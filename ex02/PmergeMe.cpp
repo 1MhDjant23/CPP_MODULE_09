@@ -1,6 +1,14 @@
 #include "PmergeMe.hpp"
 
-size_t	PmergeMe::seuil = 5;
+size_t	PmergeMe::seuil = 16;
+
+PmergeMe::PmergeMe(int ac, char **av) {
+	if (ac <= 2)
+		throw std::runtime_error("Error: not enough arguments.");
+	if (!this->parseInput(ac, av))
+		throw std::runtime_error("Error: invalid input.");
+	printListBefore(); // Std out: Print the list before sorting
+}
 
 bool	PmergeMe::parseInput(int arc, char **arg) {
 	for (int i = 1; i < arc; i++) {
@@ -39,7 +47,6 @@ bool	PmergeMe::hasDuplicat() const {
 	return false;
 }
 
-
 std::vector<size_t>	PmergeMe::getJacobsthalOrder(size_t size) {
 	std::vector<size_t>	Jacob(size + 2);
 	if (size > 0)
@@ -63,32 +70,64 @@ std::vector<size_t>	PmergeMe::getJacobsthalOrder(size_t size) {
 	return Jacob;
 }
 
-
-PmergeMe::PmergeMe(int ac, char **av) {
-	if (ac < 3 || !this->parseInput(ac, av))
-		throw std::runtime_error("Error: invalid input.");
-    printListBefore(); // Std out: Print the list before sorting
-}
-
 void	PmergeMe::printListBefore() const {
 	std::cout << "Before: ";
 	for (size_t i = 0; i < this->vList.size(); i++)
-	{
 		std::cout << this->vList[i] << " ";
-	}
 	std::cout << std::endl;
 }
 
 void	PmergeMe::printListAfter() const {
-	std::cout << "After: ";
-	for (size_t i = 0; i < this->vMainChain.size(); i++)
+	if (this->isSorted())
 	{
-		std::cout << this->vMainChain[i] << " ";
+		std::cout << "After: ";
+		for (size_t i = 0; i < this->vMainChain.size(); i++)
+			std::cout << this->vMainChain[i] << " ";
+		std::cout << std::endl;
+		std::cout << "<<<<<< The list is sorted! >>>>>>>" << std::endl;
 	}
-	std::cout << std::endl;
-	for (size_t i = 0; i < this->dMainChain.size(); i++)
-	{
-		std::cout << this->dMainChain[i] << " ";
-	}
-	std::cout << std::endl;
+	else
+		std::cout << "Error: the list is not sorted!" << std::endl;
 }
+
+PmergeMe::~PmergeMe() {
+	this->vList.clear();
+	this->vMainChain.clear();
+	this->_vPair.clear();
+	this->dList.clear();
+	this->dMainChain.clear();
+	this->_dPair.clear();
+}
+
+bool	PmergeMe::isSorted() const {
+	for (size_t i = 1; i < this->vMainChain.size(); i++) {
+		if (this->vMainChain[i - 1] > this->vMainChain[i])
+			return false;
+	}
+	return true;
+}
+
+// getters 
+std::vector<int>&	PmergeMe::getVList(){
+	return this->vList;
+};
+
+std::deque<int>&	PmergeMe::getDList(){
+	return this->dList;
+};
+
+std::vector<std::pair<int, int> >&	PmergeMe::getVPair(){
+	return this->_vPair;
+};
+
+std::deque<std::pair<int, int> >&	PmergeMe::getDPair(){
+	return this->_dPair;
+};
+
+std::vector<int>&	PmergeMe::getVMainChain(){
+	return this->vMainChain;
+};
+
+std::deque<int>&	PmergeMe::getDMainChain(){
+	return this->dMainChain;
+};

@@ -1,9 +1,11 @@
+
 template <typename LIST, typename PAIR>
-void	PmergeMe::pairSort(LIST& list, PAIR& pair) {
+void	PmergeMe::pairSort(LIST& list, PAIR& pair, TimeTracker& chrono) {
 	size_t	i = 0;
 	size_t	x = 0;
 	if (list.size() % 2 != 0)
 		_unpair = list[list.size() - 1];
+	chrono.start();
 	while (i < list.size() - 1) {
 		pair.push_back(std::make_pair(list[i], list[i + 1]));
 		x++;
@@ -65,7 +67,7 @@ void	PmergeMe::mergeInserionSort(T& arr, size_t start, size_t end) {
 }
 
 template <typename CHAIN, typename PAIR>
-void	PmergeMe::insertSmallJacobsthal(CHAIN& mainChain, PAIR& _pair) {
+void	PmergeMe::insertSmallJacobsthal(CHAIN& mainChain, PAIR& _pair, TimeTracker& chrono) {
 	const std::vector<size_t>	jacobIndex = PmergeMe::getJacobsthalOrder(_pair.size());
 	typename CHAIN::iterator pos;
 	for (size_t i = 0; i < jacobIndex.size(); i++)
@@ -79,4 +81,6 @@ void	PmergeMe::insertSmallJacobsthal(CHAIN& mainChain, PAIR& _pair) {
 		pos = std::lower_bound(mainChain.begin(), mainChain.end(), _unpair);
 		mainChain.insert(pos, _unpair);
 	}
+	chrono.stop();
+	chrono.setElapsedTime();
 }

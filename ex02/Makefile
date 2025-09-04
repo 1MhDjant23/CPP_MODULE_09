@@ -6,11 +6,13 @@ FLAGS = -Wall -Wextra -Werror -std=c++98
 
 SRCS = $(shell find . -name "*.cpp")
 
+HEADERS = $(shell find . -name "*.hpp" -o -name "*.tpp")
+
 OBJ = $(SRCS:.cpp=.o)
 
 all: $(NAME)
 
-%.o: %.cpp PmergeMe.hpp PmergeMe.tpp
+%.o: %.cpp $(HEADERS)
 	$(CC) $(FLAGS) -c $< -o $@
 
 $(NAME): $(OBJ)
