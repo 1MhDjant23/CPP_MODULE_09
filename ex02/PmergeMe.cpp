@@ -1,9 +1,8 @@
 #include "PmergeMe.hpp"
-template <class T, class PAIR>
-int	PmergeMe<T, PAIR>::seuil = 5;
 
-template <class T, class PAIR>
-bool	PmergeMe<T, PAIR>::parseInput(int arc, char **arg) {
+size_t	PmergeMe::seuil = 5;
+
+bool	PmergeMe::parseInput(int arc, char **arg) {
 	for (int i = 1; i < arc; i++) {
 		int					operand = 0;
 		std::string			remainder;
@@ -16,65 +15,33 @@ bool	PmergeMe<T, PAIR>::parseInput(int arc, char **arg) {
 			}
 			if (operand < 0)
 				throw	std::runtime_error("Error: negative number.");
-			this->list.push_back(operand);
+			this->vList.push_back(operand);
+			this->dList.push_back(operand);
 		}
 		else
 			throw std::runtime_error("Error: invalid input.");
 	}
 	if (this->hasDuplicat())
 		throw std::runtime_error("Error: duplicated number!");
+	this->_unpair = -1;
 	return true;
 }
 
-template <class T, class PAIR>
-bool	PmergeMe<T, PAIR>::hasDuplicat() const {
-	for (size_t i = 0; i < this->list.size(); i++)
+bool	PmergeMe::hasDuplicat() const {
+	for (size_t i = 0; i < this->vList.size(); i++)
 	{
-		for (size_t x = i + 1; x < this->list.size(); x++)
+		for (size_t x = i + 1; x < this->vList.size(); x++)
 		{
-			if (this->list[i] == this->list[x])
+			if (this->vList[i] == this->vList[x])
 				return true;
 		}
 	}
 	return false;
 }
 
-template <class T, class PAIR>
-void	PmergeMe<T, PAIR>::pairSort() {
-	size_t	i = 0;
-	size_t	x = 0;
-	if (this->list.size() % 2 != 0)
-		this->_unpair = this->list[this->list.size() - 1];
-	while (i < this->list.size() - 1) {
-		this->_pair.push_back(std::make_pair(this->list[i], this->list[i + 1] ));
-		x++;
-		i += 2;
-	}
-		std::cout << "size of list is : " << this->list.size() << std::endl;
-	this->list.clear();
-	for (size_t i = 0; i < this->_pair.size(); i++) {
-		if (this->_pair[i].first > this->_pair[i].second) {
-			int	tmp = this->_pair[i].first;
-			this->_pair[i].first = this->_pair[i].second;
-			this->_pair[i].second = tmp;
-		}
-	}
-	this->setMainChain();
-}
 
-template <class T, class PAIR>
-void	PmergeMe<T, PAIR>::setMainChain() {
-	for (size_t i = 0; i < this->_pair.size(); i++)
-		this->mainChain.push_back(this->_pair[i].second);
-
-	//sort mainChain using mergeInserionSort algorithm
-	PmergeMe<T, PAIR>::mergeInserionSort(this->mainChain, 0, this->mainChain.size() - 1);
-
-}
-
-template <class T, class PAIR>
-T	PmergeMe<T, PAIR>::getJacobsthalOrder(size_t size) {
-	T	Jacob(size + 2);
+std::vector<size_t>	PmergeMe::getJacobsthalOrder(size_t size) {
+	std::vector<size_t>	Jacob(size + 2);
 	if (size > 0)
 		Jacob[0] = 0;
 	if (size > 1)
@@ -97,73 +64,31 @@ T	PmergeMe<T, PAIR>::getJacobsthalOrder(size_t size) {
 }
 
 
-template <class T, class PAIR>
-void	PmergeMe<T, PAIR>::insertSmallJacobsthal() {
-	const T	jacobIndex = PmergeMe<T, PAIR>::getJacobsthalOrder(_pair.size());
-	typename T::iterator pos;
-	for (size_t i = 0; i < jacobIndex.size(); i++)
-	{
-		int	small = _pair[jacobIndex[i]].first;
-		pos = std::lower_bound(mainChain.begin(), mainChain.end(), small);
-		mainChain.insert(pos, small);
-	}
-	if (_unpair != -1)
-	{
-		pos = std::lower_bound(mainChain.begin(), mainChain.end(), _unpair);
-		mainChain.insert(pos, _unpair);
-	}
-	std::cout << "size of mainChain is : " << mainChain.size() << std::endl;
-	std::cout << "checking if the list is sorted ... " << std::endl;
-	if (std::is_sorted(mainChain.begin(), mainChain.end()))
-	{
-		std::cout << "List is sorted." << std::endl;
-	}
-	else
-	{
-		std::cout << "List is not sorted." << std::endl;
-	}
-}
-
-template <class T, class PAIR>
-void	PmergeMe<T, PAIR>::insertionSort(T& arr, size_t start, size_t end) {
-	for (size_t i = start + 1; i <= end; i++)
-	{
-		int	key = arr[i];
-		int	j = i - 1;
-		while (j >= start && arr[j] > key)
-		{
-			arr[j + 1] = arr[j];
-			j--;
-		}
-		arr[j + 1] = key;
-	}
-}
-
-template <class T, class PAIR>
-void	PmergeMe<T, PAIR>::mergeInserionSort(T& arr, size_t start, size_t end) {
-	if (end - start + 1 <= PmergeMe::seuil) {
-		PmergeMe<T, PAIR>::insertionSort(arr, start, end);
-		return ;
-	}
-	int		midll = start + (end - start) / 2;
-	mergeInserionSort(arr, start, midll);
-	mergeInserionSort(arr, midll + 1, end);
-	T	tmp(end - start + 1);
-	size_t	i = start;
-	size_t	j = midll + 1;
-	size_t	k = 0;
-    while (i <= midll && j <= end)
-    	tmp[k++] = (arr[i] < arr[j]) ? arr[i++] : arr[j++];
-	while (i <= midll) tmp[k++] = arr[i++];
-	while (j <= end) tmp[k++] = arr[j++];
-	for (k = 0; k < tmp.size(); k++)
-		arr[start + k] = tmp[k];
-}
-
-template <class T, class PAIR>
-PmergeMe<T, PAIR>::PmergeMe(int ac, char **av) {
+PmergeMe::PmergeMe(int ac, char **av) {
 	if (ac < 3 || !this->parseInput(ac, av))
 		throw std::runtime_error("Error: invalid input.");
-	if (std::is_sorted(this->list.begin(), this->list.end()))
-		throw std::runtime_error("Numbers already sorted.");
+    printListBefore(); // Std out: Print the list before sorting
+}
+
+void	PmergeMe::printListBefore() const {
+	std::cout << "Before: ";
+	for (size_t i = 0; i < this->vList.size(); i++)
+	{
+		std::cout << this->vList[i] << " ";
+	}
+	std::cout << std::endl;
+}
+
+void	PmergeMe::printListAfter() const {
+	std::cout << "After: ";
+	for (size_t i = 0; i < this->vMainChain.size(); i++)
+	{
+		std::cout << this->vMainChain[i] << " ";
+	}
+	std::cout << std::endl;
+	for (size_t i = 0; i < this->dMainChain.size(); i++)
+	{
+		std::cout << this->dMainChain[i] << " ";
+	}
+	std::cout << std::endl;
 }

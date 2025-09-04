@@ -10,7 +10,7 @@ OBJ = $(SRCS:.cpp=.o)
 
 all: $(NAME)
 
-%.o: %.cpp RPN.php
+%.o: %.cpp PmergeMe.hpp PmergeMe.tpp
 	$(CC) $(FLAGS) -c $< -o $@
 
 $(NAME): $(OBJ)
