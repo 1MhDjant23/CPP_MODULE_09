@@ -6,18 +6,20 @@ FLAGS = -Wall -Wextra -Werror -std=c++98
 
 SRCS = $(shell find . -name "*.cpp")
 
+HEADRE = $(shell find . -name "*.hpp")
+
 OBJ = $(SRCS:.cpp=.o)
 
 all: $(NAME)
 
-%.o: %.cpp BitcoinExchange.php
+%.o: %.cpp $(HEADRE)
 	$(CC) $(FLAGS) -c $< -o $@
 
 $(NAME): $(OBJ)
 	$(CC) $(FLAGS) $(OBJ) -o $(NAME)
 
 clean:
-	rm -f $(OBJ) $(NAME)
+	rm -f $(OBJ)
 
 fclean: clean
 	rm -f $(NAME)

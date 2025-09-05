@@ -1,1 +1,62 @@
-#include "BitcoinExchange.hpp"BitcoinExchange::BitcoinExchange() { return ;}BitcoinExchange::~BitcoinExchange() { return ;}void    BitcoinExchange::setDataBase(const char* data) {    std::ifstream   file(data);    if (!file)        throw std::runtime_error("Error: can't open file.");    std::string line;    size_t  pos;    while (std::getline(file, line)) {        pos = line.find(',');        this->database[line.substr(0, pos)] = this->stof(line.substr(pos + 1, line.size()));    }    database.erase("date");    file.close();}float   BitcoinExchange::stof(const std::string& str) {    float   num;    std::stringstream   ss(str);    ss >> num;    return num;}void    BitcoinExchange::fileInterpreter(const char* file) {    std::ifstream   fil(file);    std::string     line;    size_t			start = 0;    size_t			end = 0;    std::string		temp;    if (!fil)        throw std::runtime_error("Error: can't open file.");    while (line.empty())    	std::getline(fil, line);    start = line.find_first_not_of(" \t");    end = line.find_last_not_of(" \t");    temp = line.substr(start, end - start + 1);    if ("date | value" != temp)    	throw std::runtime_error("Error: bad header.");    while (std::getline(fil, line)) {        parseInputFile   ps(line);        if (ps.getToParse().empty())        	continue ;        this->exchange(ps.checkValidFormat(), line, ps);    }}void	BitcoinExchange::exchange(bool stat, const std::string& line, const parseInputFile& obj) const {	if (stat == false) { std::cout << "Error: bad input => " << line << std::endl; return; }	if (obj.getValue() < 0) { std::cout << "Error: not a positive number." << std::endl; return; }	if (obj.getValue() > 1000) { std::cout << "Error: too large a number." << std::endl; return; }	std::map<std::string, float>::const_iterator it = this->database.lower_bound(obj.getDate());	if (it->first == obj.getDate() || it->first == this->database.begin()->first)		std::cout << it->first << " => " << obj.getValue() << " = " << it->second * obj.getValue() << std::endl;	else {		it--;		std::cout << it->first << " => " << obj.getValue() << " = " << it->second * obj.getValue() << std::endl;	}}/*----------- Parse Class ---------------*/parseInputFile::~parseInputFile() { return ; }parseInputFile::parseInputFile(const std::string& str) : toParse(str) { this->toParse = this->trim(); /*trim whitespace*/ }const std::string&	parseInputFile::getToParse() const { return this->toParse; }bool    parseInputFile::checkValidFormat() {    std::string date;    std::string price;    size_t      pos = this->toParse.find_first_not_of('|');    if (pos == std::string::npos)/* check if date-value separed by '|' */        return false;    pos = this->toParse.find(' ');    if (pos == std::string::npos || this->toParse[pos + 1] != '|' || this->toParse[pos + 2] != ' ' || (!std::isdigit(this->toParse[pos + 3]) && this->toParse[pos + 3] != '-'))        return false;    date = this->toParse.substr(0, pos);    if (!this->parseDate(date))    	return false;    this->setDate(date);    pos += 3;    if (toParse[pos] == std::string::npos)    	return false;    price  = this->toParse.substr(pos, this->toParse.length() - pos);    if (price.empty())    	return false;    std::istringstream  iss(price);    float   value = 0;    if (!(iss >> value) || !iss.eof())	    return false;	this->setValue(value);	return true;}std::string parseInputFile::trim() {    size_t  start = this->toParse.find_first_not_of(" \t");    size_t  end = this->toParse.find_last_not_of(" \t");    return (start == std::string::npos ? "" : this->toParse.substr(start, end - start + 1));}/*------ getter and setter ----------*/bool    parseInputFile::parseDate(const std::string& date) const {    char    dash1, dash2;    int year, month, day, dashCount = 0;    std::istringstream  iss(date);    if (!(iss >> year >> dash1 >> month >> dash2 >> day))        return false;        if (dash1 != '-' || dash2 != '-')        return false;        if (date.length() != 10 || date[4] != '-' || date[7] != '-')        return false;    if (day < 1 || day > 31 || month < 1 || month > 12 || year < 1)    	return false;    return true;}void	parseInputFile::setValue(float value) {	this->value = value; }const float	parseInputFile::getValue() const { return this->value; }void    parseInputFile::setDate(const std::string& date) { this->date = date; }const std::string&	parseInputFile::getDate() const { return date; }/*-------- other functions --------*/bool    validFile(const std::string& inpFile){        std::ifstream    file(inpFile.c_str());    if ( inpFile.empty() || !file)        return false;    file.close();    return true;}
+#include "BitcoinExchange.hpp"
+
+BitcoinExchange::BitcoinExchange() { return ;}
+BitcoinExchange::~BitcoinExchange() { return ;}
+
+void    BitcoinExchange::setDataBase(const char* data) {
+    std::ifstream   file(data);
+    if (!file)
+        throw std::runtime_error("Error: can't open file.");
+    std::string line;
+    size_t  pos;
+    while (std::getline(file, line)) {
+        pos = line.find(',');
+        this->database[line.substr(0, pos)] = this->stof(line.substr(pos + 1, line.size()));
+    }
+    database.erase("date");
+    file.close();
+}
+
+float   BitcoinExchange::stof(const std::string& str) {
+    float   num;
+    std::stringstream   ss(str);
+    ss >> num;
+    return num;
+}
+
+void    BitcoinExchange::fileInterpreter(const char* file) {
+    std::ifstream   fil(file);
+    std::string     line;
+    size_t			start = 0;
+    size_t			end = 0;
+    std::string		temp;
+
+    if (!fil)
+        throw std::runtime_error("Error: can't open file.");
+    while (line.empty())
+    	std::getline(fil, line);
+    start = line.find_first_not_of(" \t");
+    end = line.find_last_not_of(" \t");
+    temp = line.substr(start, end - start + 1);
+    if ("date | value" != temp)
+    	throw std::runtime_error("Error: bad header.");
+    while (std::getline(fil, line)) {
+        ParseInputFile   ps(line);
+        if (ps.getToParse().empty())
+        	continue ;
+        this->exchange(ps.checkValidFormat(), line, ps);
+    }
+}
+
+void	BitcoinExchange::exchange(bool stat, const std::string& line, const ParseInputFile& obj) const {
+	if (stat == false) { std::cout << "Error: bad input => " << line << std::endl; return; }
+	if (obj.getValue() < 0) { std::cout << "Error: not a positive number." << std::endl; return; }
+	if (obj.getValue() > 1000) { std::cout << "Error: too large a number." << std::endl; return; }
+	std::map<std::string, float>::const_iterator it = this->database.lower_bound(obj.getDate());
+	if (it->first == obj.getDate() || it->first == this->database.begin()->first)
+		std::cout << it->first << " => " << obj.getValue() << " = " << it->second * obj.getValue() << std::endl;
+	else {
+		it--;
+		std::cout << it->first << " => " << obj.getValue() << " = " << it->second * obj.getValue() << std::endl;
+	}
+}

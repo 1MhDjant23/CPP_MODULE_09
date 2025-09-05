@@ -2,34 +2,14 @@
 #define __BITCOINEXCHANGE_HPP__
 
 #include <iostream>
-#include <fstream>
 #include <map>
 #include <exception>
-#include <sstream>
 #include <iomanip>
+#include "ParseInputFile.hpp"
 #define  dataBase "data.csv"
 #define  HEADER_LINE "date | value"
 
-class parseInputFile {
-    private:
-    	std::string date;
-    	float	value;
-        std::string toParse;
-        parseInputFile();
-        parseInputFile(const parseInputFile& obj);
-        parseInputFile& operator=(const parseInputFile& obj);
-    public:
-        const 	std::string& getToParse() const;
-        bool    checkValidFormat() ;
-        bool    parseDate(const std::string& date) const;
-        void	setValue(float value);
-        const 	float	getValue() const;
-        const	 std::string& getDate() const;
-        void	setDate(const std::string& date);
-        parseInputFile(const std::string& str);
-        std::string trim();
-        ~parseInputFile();
-};
+
 
 class BitcoinExchange {
     private:
@@ -40,7 +20,7 @@ class BitcoinExchange {
         void    setDataBase(const char* data);
         void    fileInterpreter(const char* file);
         float   stof(const std::string& str);
-        void	exchange(bool stat, const std::string& line, const parseInputFile& obj) const;
+        void	exchange(bool stat, const std::string& line, const ParseInputFile& obj) const;
         BitcoinExchange();
         ~BitcoinExchange();
 };
