@@ -6,7 +6,9 @@
 #include <iomanip>
 enum typeList {
     VECTOR,
-    DEQUE
+    DEQUE,
+    CHAIN,
+    LIST
 };
 
 class TimeTracker {

@@ -2,13 +2,11 @@
 template <typename LIST, typename PAIR>
 void	PmergeMe::pairSort(LIST& list, PAIR& pair, TimeTracker& chrono) {
 	size_t	i = 0;
-	size_t	x = 0;
 	if (list.size() % 2 != 0)
 		_unpair = list[list.size() - 1];
 	chrono.start();
 	while (i < list.size() - 1) {
 		pair.push_back(std::make_pair(list[i], list[i + 1]));
-		x++;
 		i += 2;
 	}
 	list.clear();

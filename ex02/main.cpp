@@ -19,7 +19,8 @@ int	main(int ac, char **av) {
 		pm.insertSmallJacobsthal(pm.getDMainChain(), pm.getDPair(), timer);
 		timer.displayElapsedTime(DEQUE, ac - 1);
 	}
-	catch (const std::exception& e)
+	catch (const std::exception& e) {
 		std::cerr << e.what() << std::endl;
+	}
 	return EXIT_SUCCESS;
 }

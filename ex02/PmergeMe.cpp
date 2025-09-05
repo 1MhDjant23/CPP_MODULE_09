@@ -7,6 +7,11 @@ PmergeMe::PmergeMe(int ac, char **av) {
 		throw std::runtime_error("Error: not enough arguments.");
 	if (!this->parseInput(ac, av))
 		throw std::runtime_error("Error: invalid input.");
+	if (isSorted(LIST))
+	{
+		std::cout << "The list is already sorted!" << std::endl;
+		exit(EXIT_SUCCESS);
+	}
 	printListBefore(); // Std out: Print the list before sorting
 }
 
@@ -14,11 +19,11 @@ bool	PmergeMe::parseInput(int arc, char **arg) {
 	for (int i = 1; i < arc; i++) {
 		int					operand = 0;
 		std::string			remainder;
-	
 		std::istringstream	iss(arg[i]);
+		
 		if (iss >> operand) {
 			if (iss >> remainder) {
-				std::cout << remainder << std::endl;
+				std::cout << operand << remainder << std::endl;
 				throw std::runtime_error("Error: bad operand!");
 			}
 			if (operand < 0)
@@ -78,7 +83,7 @@ void	PmergeMe::printListBefore() const {
 }
 
 void	PmergeMe::printListAfter() const {
-	if (this->isSorted())
+	if (this->isSorted(CHAIN))
 	{
 		std::cout << "After: ";
 		for (size_t i = 0; i < this->vMainChain.size(); i++)
@@ -99,10 +104,18 @@ PmergeMe::~PmergeMe() {
 	this->_dPair.clear();
 }
 
-bool	PmergeMe::isSorted() const {
-	for (size_t i = 1; i < this->vMainChain.size(); i++) {
-		if (this->vMainChain[i - 1] > this->vMainChain[i])
-			return false;
+bool	PmergeMe::isSorted(typeList containerType) const {
+	if (containerType == CHAIN) {
+		for (size_t i = 1; i < this->vMainChain.size(); i++) {
+			if (this->vMainChain[i - 1] > this->vMainChain[i])
+				return false;
+		}
+	}
+	else if (containerType == LIST) {
+		for (size_t i = 1; i < this->vList.size(); i++) {
+			if (this->vList[i - 1] > this->vList[i])
+				return false;
+		}
 	}
 	return true;
 }
