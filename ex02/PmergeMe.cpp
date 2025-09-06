@@ -34,22 +34,8 @@ bool	PmergeMe::parseInput(int arc, char **arg) {
 		else
 			throw std::runtime_error("Error: invalid input.");
 	}
-	if (this->hasDuplicat())
-		throw std::runtime_error("Error: duplicated number!");
 	this->_unpair = -1;
 	return true;
-}
-
-bool	PmergeMe::hasDuplicat() const {
-	for (size_t i = 0; i < this->vList.size(); i++)
-	{
-		for (size_t x = i + 1; x < this->vList.size(); x++)
-		{
-			if (this->vList[i] == this->vList[x])
-				return true;
-		}
-	}
-	return false;
 }
 
 std::vector<size_t>	PmergeMe::getJacobsthalOrder(size_t size) {

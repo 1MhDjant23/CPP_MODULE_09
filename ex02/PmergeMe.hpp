@@ -57,7 +57,6 @@ class	PmergeMe {
 		void	insertSmallJacobsthal(CHAIN& mainChain, PAIR& _pair, TimeTracker& chrono);
 		// utility methods
 		bool	isSorted(typeList containerType) const;
-		bool	hasDuplicat() const;
 		bool	parseInput(int arc, char **arg);
 };
 #include "PmergeMe.tpp"
