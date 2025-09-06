@@ -29,6 +29,8 @@ bool    ParseInputFile::checkValidFormat() {
 	this->setValue(value);
 	return true;
 }
+
+
 std::string ParseInputFile::trim() {
     size_t  start = this->toParse.find_first_not_of(" \t");
     size_t  end = this->toParse.find_last_not_of(" \t");
@@ -44,9 +46,9 @@ bool    ParseInputFile::parseDate(const std::string& date) const {
     std::istringstream  iss(date);
     if (!(iss >> year >> dash1 >> month >> dash2 >> day))
         return false;
-        if (dash1 != '-' || dash2 != '-')
+    if (dash1 != '-' || dash2 != '-')
         return false;
-        if (date.length() != 10 || date[4] != '-' || date[7] != '-')
+    if (date.length() != 10 || date[4] != '-' || date[7] != '-')
         return false;
     if (day < 1 || day > 31 || month < 1 || month > 12 || year < 1)
     	return false;
@@ -57,11 +59,25 @@ float	ParseInputFile::getValue() const { return this->value; }
 void    ParseInputFile::setDate(const std::string& date) { this->date = date; }
 const std::string&	ParseInputFile::getDate() const { return date; }
 /*-------- other functions --------*/
+
 bool    validFile(const std::string& inpFile)
 {    
     std::ifstream    file(inpFile.c_str());
-    if ( inpFile.empty() || !file)
+    if (!file.is_open())
         return false;
+    if (!isFileEmpty(file)) {
+        std::cerr << "Error: empty file." << std::endl;
+        exit(EXIT_SUCCESS);
+    }
     file.close();
     return true;
+}
+bool    isFileEmpty(std::ifstream& stream) {    
+    char    c;
+    while (stream.get(c))
+    {
+        if (!std::isspace(static_cast<unsigned char>(c)))
+            return true;
+    }
+    return false;
 }

@@ -25,5 +25,6 @@ class ParseInputFile {
         std::string trim();
         ~ParseInputFile();
 };
+bool    isFileEmpty(std::ifstream& stream);
 
 #endif
